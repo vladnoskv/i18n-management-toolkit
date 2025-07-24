@@ -1,0 +1,147 @@
+{
+  "menu": {
+    "title": "🌐 MENU DE GESTION I18N",
+    "separator": "============================================================",
+    "options": {
+      "init": "🚀 Initialiser de nouvelles langues",
+      "analyze": "🔍 Analyser les traductions",
+      "validate": "✅ Valider les traductions",
+      "usage": "📊 Vérifier l'utilisation des clés",
+      "complete": "🎯 Compléter les traductions (100% de couverture)",
+      "workflow": "🔄 Exécuter le flux complet",
+      "status": "📋 Afficher le statut du projet",
+      "delete": "🗑️  Supprimer tous les rapports",
+      "language": "🌍 Changer la langue de l'interface",
+      "help": "❓ Aide",
+      "exit": "🚪 Quitter"
+    },
+    "prompt": "Sélectionnez une option (0-10) : ",
+    "invalidChoice": "❌ Choix invalide. Veuillez sélectionner 0-10.",
+    "continuePrompt": "Appuyez sur Entrée pour continuer...",
+    "goodbye": "👋 Au revoir !"
+  },
+  "status": {
+    "title": "📊 STATUT DU PROJET I18N",
+    "sourceDir": "📁 Répertoire source",
+    "sourceLanguage": "🔤 Langue source",
+    "i18nSetup": "🌐 Configuration i18n",
+    "availableLanguages": "🗂️  Langues disponibles",
+    "translationFiles": "📄 Fichiers de traduction",
+    "totalKeys": "🔤 Total des clés de traduction",
+    "yes": "✅ Oui",
+    "no": "❌ Non",
+    "suggestions": {
+      "analysis": "💡 Vous pouvez exécuter une analyse pour vérifier la complétude des traductions",
+      "init": "💡 Exécutez l'initialisation pour configurer i18n pour votre projet"
+    }
+  },
+  "operations": {
+    "init": {
+      "title": "🚀 INITIALISATION I18N",
+      "separator": "============================================================"
+    },
+    "analyze": {
+      "title": "🔍 ANALYSE DES TRADUCTIONS",
+      "separator": "============================================================"
+    },
+    "validate": {
+      "title": "✅ VALIDATION DES TRADUCTIONS",
+      "separator": "============================================================"
+    },
+    "usage": {
+      "title": "📊 ANALYSE DE L'UTILISATION DES CLÉS",
+      "separator": "============================================================"
+    },
+    "complete": {
+      "title": "🎯 COMPLETION DES TRADUCTIONS",
+      "separator": "============================================================"
+    },
+    "workflow": {
+      "title": "🔄 EXÉCUTION DU FLUX I18N COMPLET",
+      "separator": "============================================================",
+      "steps": {
+        "completing": "1️⃣ Completion des traductions pour 100% de couverture...",
+        "validating": "2️⃣ Validation des traductions...",
+        "analyzing": "3️⃣ Analyse de la complétude des traductions...",
+        "usage": "4️⃣ Vérification de l'utilisation des clés...",
+        "completed": "🎉 Flux terminé avec 100% de couverture ! Consultez le répertoire des rapports pour des résultats détaillés."
+      },
+      "notSetup": "❌ I18n non configuré. Veuillez d'abord exécuter l'initialisation."
+    },
+    "delete": {
+      "title": "🗑️  SUPPRESSION DE TOUS LES RAPPORTS",
+      "separator": "============================================================",
+      "looking": "🔍 Recherche de rapports dans",
+      "noDirectory": "📁 Le répertoire des rapports n'existe pas. Création...",
+      "directoryCreated": "✅ Répertoire des rapports créé.",
+      "noFiles": "📄 Aucun fichier de rapport trouvé à supprimer.",
+      "found": "📄 {count} fichiers de rapport trouvés :",
+      "confirmPrompt": "⚠️  Êtes-vous sûr de vouloir supprimer tous les rapports ? (o/N) : ",
+      "deleted": "✅ Supprimé : {file}",
+      "failed": "❌ Échec de la suppression de {file} : {error}",
+      "success": "🎉 {count} fichiers de rapport supprimés avec succès.",
+      "cancelled": "❌ Opération annulée.",
+      "errorReading": "❌ Erreur lors de la lecture du répertoire des rapports :",
+      "errorCreating": "❌ Erreur lors de la création du répertoire des rapports :"
+    }
+  },
+  "help": {
+    "title": "🌐 OUTIL DE GESTION I18N",
+    "separator": "============================================================",
+    "description": "Cet outil vous aide à gérer l'internationalisation (i18n) de votre projet.",
+    "commands": "COMMANDES :",
+    "commandList": {
+      "init": "Initialiser i18n pour de nouvelles langues",
+      "analyze": "Analyser la complétude des traductions",
+      "validate": "Valider les fichiers de traduction",
+      "usage": "Vérifier l'utilisation des clés de traduction",
+      "complete": "Compléter les traductions pour 100% de couverture",
+      "status": "Afficher le statut global i18n",
+      "workflow": "Exécuter le flux complet avec finalisation",
+      "delete": "Supprimer tous les fichiers de rapport",
+      "help": "Afficher ce message d'aide"
+    },
+    "options": "OPTIONS :",
+    "optionList": {
+      "command": "--command=<cmd>        Exécuter une commande spécifique directement",
+      "sourceDir": "--source-dir=<chemin>  Définir le répertoire source i18n",
+      "languages": "--languages=<liste>    Liste de langues séparées par des virgules",
+      "interactive": "--interactive=false    Désactiver le mode interactif",
+      "uiLanguage": "--ui-language=<langue> Définir la langue de l'interface (en, de, es, fr, ru, ja, zh)",
+      "reportLanguage": "--report-language=<langue> Définir la langue des rapports"
+    },
+    "examples": "EXEMPLES :",
+    "exampleList": [
+      "node scripts/i18n/00-manage-i18n.js",
+      "node scripts/i18n/00-manage-i18n.js --command=init",
+      "node scripts/i18n/00-manage-i18n.js --command=validate --languages=de,fr",
+      "node scripts/i18n/00-manage-i18n.js --source-dir=./locales",
+      "node scripts/i18n/00-manage-i18n.js --ui-language=de",
+      "node scripts/i18n/00-manage-i18n.js --report-language=es"
+    ]
+  },
+  "errors": {
+    "unknown": "❌ Erreur :",
+    "unknownCommand": "❌ Commande inconnue :",
+    "errorRunning": "❌ Erreur lors de l'exécution de la finalisation :"
+  },
+  "language": {
+    "title": "🌍 CHANGER LA LANGUE DE L'INTERFACE",
+    "separator": "============================================================",
+    "current": "Langue actuelle de l'interface : {language}",
+    "available": "Langues disponibles :",
+    "prompt": "Sélectionnez une langue (1-7) ou 0 pour annuler : ",
+    "invalid": "❌ Sélection invalide. Veuillez choisir 1-7 ou 0.",
+    "cancelled": "❌ Changement de langue annulé.",
+    "changed": "✅ Langue de l'interface changée en {language}. Redémarrez l'outil pour voir les changements.",
+    "languages": {
+      "en": "Anglais",
+      "de": "Allemand (Deutsch)",
+      "es": "Espagnol (Español)",
+      "fr": "Français",
+      "ru": "Russe (Русский)",
+      "ja": "Japonais (日本語)",
+      "zh": "Chinois (中文)"
+    }
+  }
+}

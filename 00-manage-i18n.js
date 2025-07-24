@@ -18,11 +18,15 @@ const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
 
+// Import UI internationalization
+const uiI18n = require('./ui-i18n');
+
 // Import other i18n scripts
 const I18nInitializer = require('./01-init-i18n');
 const I18nAnalyzer = require('./02-analyze-translations');
 const I18nValidator = require('./03-validate-translations');
 const I18nUsageAnalyzer = require('./04-check-usage');
+const I18nSizingAnalyzer = require('./06-analyze-sizing');
 
 // Default configuration
 const DEFAULT_CONFIG = {
@@ -59,6 +63,16 @@ class I18nManager {
           parsed.languages = value.split(',');
         } else if (key === 'interactive') {
           parsed.interactive = value !== 'false';
+        } else if (key === 'ui-language') {
+          parsed.uiLanguage = value;
+        } else if (key === 'report-language') {
+          parsed.reportLanguage = value;
+        } else if (key === 'sizing') {
+          parsed.sizing = true;
+        } else if (key === 'sizing-threshold') {
+          parsed.sizingThreshold = parseInt(value);
+        } else if (key === 'sizing-format') {
+          parsed.sizingFormat = value;
         }
       }
     });
@@ -68,34 +82,38 @@ class I18nManager {
 
   // Display help information
   showHelp() {
-    console.log(`
-🌐 I18N MANAGEMENT TOOL
-${'='.repeat(60)}
-`);
-    console.log('This tool helps you manage internationalization (i18n) for your project.\n');
+    console.log(`\n${uiI18n.t('help.title')}`);
+    console.log(uiI18n.t('help.separator'));
+    console.log(uiI18n.t('help.description') + '\n');
     
-    console.log('COMMANDS:');
-    console.log('  init      Initialize i18n for new languages');
-    console.log('  analyze   Analyze translation completeness');
-    console.log('  validate  Validate translation files');
-    console.log('  usage     Check translation key usage');
-    console.log('  complete  Complete translations for 100% coverage');
-    console.log('  status    Show overall i18n status');
-    console.log('  workflow  Run full workflow with completion');
-    console.log('  delete    Delete all report files');
-    console.log('  help      Show this help message\n');
+    console.log(uiI18n.t('help.commands'));
+    console.log(`  init      ${uiI18n.t('help.commandList.init')}`);
+    console.log(`  analyze   ${uiI18n.t('help.commandList.analyze')}`);
+    console.log(`  validate  ${uiI18n.t('help.commandList.validate')}`);
+    console.log(`  usage     ${uiI18n.t('help.commandList.usage')}`);
+    console.log(`  complete  ${uiI18n.t('help.commandList.complete')}`);
+    console.log(`  sizing    ${uiI18n.t('help.commandList.sizing')}`);
+    console.log(`  status    ${uiI18n.t('help.commandList.status')}`);
+    console.log(`  workflow  ${uiI18n.t('help.commandList.workflow')}`);
+    console.log(`  delete    ${uiI18n.t('help.commandList.delete')}`);
+    console.log(`  help      ${uiI18n.t('help.commandList.help')}\n`);
     
-    console.log('OPTIONS:');
-    console.log('  --command=<cmd>        Run specific command directly');
-    console.log('  --source-dir=<path>    Set i18n source directory');
-    console.log('  --languages=<list>     Comma-separated list of languages');
-    console.log('  --interactive=false    Disable interactive mode\n');
+    console.log(uiI18n.t('help.options'));
+    console.log(`  ${uiI18n.t('help.optionList.command')}`);
+    console.log(`  ${uiI18n.t('help.optionList.sourceDir')}`);
+    console.log(`  ${uiI18n.t('help.optionList.languages')}`);
+    console.log(`  ${uiI18n.t('help.optionList.interactive')}`);
+    console.log(`  ${uiI18n.t('help.optionList.uiLanguage')}`);
+    console.log(`  ${uiI18n.t('help.optionList.reportLanguage')}`);
+    console.log(`  ${uiI18n.t('help.optionList.sizing')}`);
+    console.log(`  ${uiI18n.t('help.optionList.sizingThreshold')}`);
+    console.log(`  ${uiI18n.t('help.optionList.sizingFormat')}\n`);
     
-    console.log('EXAMPLES:');
-    console.log('  node scripts/i18n/00-manage-i18n.js');
-    console.log('  node scripts/i18n/00-manage-i18n.js --command=init');
-    console.log('  node scripts/i18n/00-manage-i18n.js --command=validate --languages=de,fr');
-    console.log('  node scripts/i18n/00-manage-i18n.js --source-dir=./locales\n');
+    console.log(uiI18n.t('help.examples'));
+    uiI18n.t('help.exampleList').forEach(example => {
+      console.log(`  ${example}`);
+    });
+    console.log('');
   }
 
   // Prompt user for input
@@ -166,51 +184,53 @@ ${'='.repeat(60)}
 
   // Display project status
   async showStatus() {
-    console.log('📊 I18N PROJECT STATUS');
-    console.log('=' .repeat(60));
+    console.log(uiI18n.t('status.title'));
+    console.log(uiI18n.t('status.separator'));
     
     const status = await this.getProjectStatus();
     
-    console.log(`📁 Source directory: ${path.resolve(this.config.sourceDir)}`);
-    console.log(`🔤 Source language: ${this.config.sourceLanguage}`);
-    console.log(`🌐 I18n setup: ${status.hasI18n ? '✅ Yes' : '❌ No'}`);
+    console.log(`${uiI18n.t('status.sourceDir')}: ${path.resolve(this.config.sourceDir)}`);
+    console.log(`${uiI18n.t('status.sourceLanguage')}: ${this.config.sourceLanguage}`);
+    console.log(`${uiI18n.t('status.i18nSetup')}: ${status.hasI18n ? uiI18n.t('status.yes') : uiI18n.t('status.no')}`);
     
     if (status.hasI18n) {
-      console.log(`🗂️  Available languages: ${status.languages.join(', ')}`);
-      console.log(`📄 Translation files: ${status.files.length}`);
-      console.log(`🔤 Total translation keys: ${status.totalKeys}`);
+      console.log(`${uiI18n.t('status.availableLanguages')}: ${status.languages.join(', ')}`);
+      console.log(`${uiI18n.t('status.translationFiles')}: ${status.files.length}`);
+      console.log(`${uiI18n.t('status.totalKeys')}: ${status.totalKeys}`);
       
       if (status.languages.length > 1) {
-        console.log('\n💡 You can run analysis to check translation completeness');
+        console.log('\n' + uiI18n.t('status.suggestions.analysis'));
       }
     } else {
-      console.log('\n💡 Run initialization to set up i18n for your project');
+      console.log('\n' + uiI18n.t('status.suggestions.init'));
     }
   }
 
   // Interactive menu
   async showMenu() {
-    console.log('\n🌐 I18N MANAGEMENT MENU');
-    console.log('=' .repeat(60));
-    console.log('1. 🚀 Initialize new languages');
-    console.log('2. 🔍 Analyze translations');
-    console.log('3. ✅ Validate translations');
-    console.log('4. 📊 Check key usage');
-    console.log('5. 🎯 Complete translations (100% coverage)');
-    console.log('6. 🔄 Run full workflow');
-    console.log('7. 📋 Show project status');
-    console.log('8. 🗑️  Delete all reports');
-    console.log('9. ❓ Help');
-    console.log('0. 🚪 Exit\n');
+    console.log('\n' + uiI18n.t('menu.title'));
+    console.log(uiI18n.t('menu.separator'));
+    console.log(`1. ${uiI18n.t('menu.options.init')}`);
+    console.log(`2. ${uiI18n.t('menu.options.analyze')}`);
+    console.log(`3. ${uiI18n.t('menu.options.validate')}`);
+    console.log(`4. ${uiI18n.t('menu.options.usage')}`);
+    console.log(`5. ${uiI18n.t('menu.options.complete')}`);
+    console.log(`6. ${uiI18n.t('menu.options.sizing')}`);
+    console.log(`7. ${uiI18n.t('menu.options.workflow')}`);
+    console.log(`8. ${uiI18n.t('menu.options.status')}`);
+    console.log(`9. ${uiI18n.t('menu.options.delete')}`);
+    console.log(`10. ${uiI18n.t('menu.options.language')}`);
+    console.log(`11. ${uiI18n.t('menu.options.help')}`);
+    console.log(`0. ${uiI18n.t('menu.options.exit')}\n`);
     
-    const choice = await this.prompt('Select an option (0-9): ');
+    const choice = await this.prompt(uiI18n.t('menu.prompt'));
     return choice;
   }
 
   // Run initialization
   async runInit(languages = null) {
-    console.log('\n🚀 INITIALIZING I18N');
-    console.log('=' .repeat(60));
+    console.log('\n' + uiI18n.t('operations.init.title'));
+    console.log(uiI18n.t('operations.init.separator'));
     
     const initializer = new I18nInitializer({
       sourceDir: this.config.sourceDir,
@@ -228,8 +248,8 @@ ${'='.repeat(60)}
 
   // Run analysis
   async runAnalysis(languages = null) {
-    console.log('\n🔍 ANALYZING TRANSLATIONS');
-    console.log('=' .repeat(60));
+    console.log('\n' + uiI18n.t('operations.analyze.title'));
+    console.log(uiI18n.t('operations.analyze.separator'));
     
     const analyzer = new I18nAnalyzer({
       sourceDir: this.config.sourceDir,
@@ -252,8 +272,8 @@ ${'='.repeat(60)}
 
   // Run validation
   async runValidation(languages = null) {
-    console.log('\n✅ VALIDATING TRANSLATIONS');
-    console.log('=' .repeat(60));
+    console.log('\n' + uiI18n.t('operations.validate.title'));
+    console.log(uiI18n.t('operations.validate.separator'));
     
     const validator = new I18nValidator({
       sourceDir: this.config.sourceDir,
@@ -273,8 +293,8 @@ ${'='.repeat(60)}
 
   // Run usage analysis
   async runUsageAnalysis() {
-    console.log('\n📊 ANALYZING KEY USAGE');
-    console.log('=' .repeat(60));
+    console.log('\n' + uiI18n.t('operations.usage.title'));
+    console.log(uiI18n.t('operations.usage.separator'));
     
     const usageAnalyzer = new I18nUsageAnalyzer({
       sourceDir: './src',
@@ -291,8 +311,8 @@ ${'='.repeat(60)}
 
   // Run completion
   async runCompletion() {
-    console.log('\n🎯 COMPLETING TRANSLATIONS');
-    console.log('=' .repeat(60));
+    console.log('\n' + uiI18n.t('operations.complete.title'));
+    console.log(uiI18n.t('operations.complete.separator'));
     
     try {
       const I18nCompleter = require('./05-complete-translations');
@@ -304,30 +324,49 @@ ${'='.repeat(60)}
       
       await completer.complete();
     } catch (error) {
-      console.error('❌ Error running completion:', error.message);
+      console.error(uiI18n.t('errors.errorRunning'), error.message);
+    }
+  }
+
+  // Run sizing analysis
+  async runSizingAnalysis(options = {}) {
+    console.log('\n' + uiI18n.t('operations.sizing.title'));
+    console.log(uiI18n.t('operations.sizing.separator'));
+    
+    try {
+      const analyzer = new I18nSizingAnalyzer({
+        sourceDir: this.config.sourceDir,
+        sourceLanguage: this.config.sourceLanguage,
+        outputDir: this.config.outputDir,
+        ...options
+      });
+      
+      await analyzer.analyze();
+    } catch (error) {
+      console.error(uiI18n.t('errors.errorRunning'), error.message);
     }
   }
 
   // Delete all reports
   async deleteReports() {
-    console.log('\n🗑️  DELETING ALL REPORTS');
-    console.log('=' .repeat(60));
+    console.log('\n' + uiI18n.t('operations.deleteReports.title'));
+    console.log(uiI18n.t('operations.deleteReports.separator'));
     
     // Use the configured output directory
     const reportsDir = path.resolve(this.config.outputDir);
     
-    console.log(`🔍 Looking for reports in: ${reportsDir}`);
+    console.log(uiI18n.t('operations.deleteReports.lookingFor', { dir: reportsDir }));
     
     // Ensure the reports directory exists, create if it doesn't
     if (!fs.existsSync(reportsDir)) {
-      console.log('📁 Reports directory does not exist. Creating it...');
+      console.log(uiI18n.t('operations.deleteReports.directoryNotExists'));
       try {
         fs.mkdirSync(reportsDir, { recursive: true });
-        console.log('✅ Reports directory created.');
-        console.log('📄 No report files found to delete.');
+        console.log(uiI18n.t('operations.deleteReports.directoryCreated'));
+        console.log(uiI18n.t('operations.deleteReports.noFilesToDelete'));
         return;
       } catch (error) {
-        console.error('❌ Error creating reports directory:', error.message);
+        console.error(uiI18n.t('errors.errorCreatingDirectory'), error.message);
         return;
       }
     }
@@ -339,14 +378,14 @@ ${'='.repeat(60)}
       );
       
       if (reportFiles.length === 0) {
-        console.log('📄 No report files found to delete.');
+        console.log(uiI18n.t('operations.deleteReports.noFilesToDelete'));
         return;
       }
       
-      console.log(`📄 Found ${reportFiles.length} report files:`);
+      console.log(uiI18n.t('operations.deleteReports.foundFiles', { count: reportFiles.length }));
       reportFiles.forEach(file => console.log(`   - ${file}`));
       
-      const confirm = await this.prompt('\n⚠️  Are you sure you want to delete all reports? (y/N): ');
+      const confirm = await this.prompt('\n' + uiI18n.t('operations.deleteReports.confirmPrompt'));
       
       if (confirm.toLowerCase() === 'y' || confirm.toLowerCase() === 'yes') {
         let deletedCount = 0;
@@ -355,47 +394,47 @@ ${'='.repeat(60)}
           try {
             fs.unlinkSync(path.join(reportsDir, file));
             deletedCount++;
-            console.log(`✅ Deleted: ${file}`);
+            console.log(uiI18n.t('operations.deleteReports.deleted', { file }));
           } catch (error) {
-            console.log(`❌ Failed to delete ${file}: ${error.message}`);
+            console.log(uiI18n.t('operations.deleteReports.failedToDelete', { file, error: error.message }));
           }
         }
         
-        console.log(`\n🎉 Successfully deleted ${deletedCount} report files.`);
+        console.log('\n' + uiI18n.t('operations.deleteReports.successfullyDeleted', { count: deletedCount }));
       } else {
-        console.log('❌ Operation cancelled.');
+        console.log(uiI18n.t('operations.deleteReports.cancelled'));
       }
       
     } catch (error) {
-      console.error('❌ Error reading reports directory:', error.message);
+      console.error(uiI18n.t('errors.errorReadingDirectory'), error.message);
     }
   }
 
   // Run comprehensive workflow
   async runWorkflow() {
-    console.log('\n🔄 RUNNING COMPREHENSIVE I18N WORKFLOW');
-    console.log('=' .repeat(60));
+    console.log('\n' + uiI18n.t('operations.workflow.title'));
+    console.log(uiI18n.t('operations.workflow.separator'));
     
     const status = await this.getProjectStatus();
     
     if (!status.hasI18n) {
-      console.log('❌ I18n not set up. Please run initialization first.');
+      console.log(uiI18n.t('operations.workflow.notSetup'));
       return;
     }
     
-    console.log('1️⃣ Completing translations for 100% coverage...');
+    console.log(uiI18n.t('operations.workflow.step1'));
     await this.runCompletion();
     
-    console.log('\n2️⃣ Validating translations...');
+    console.log('\n' + uiI18n.t('operations.workflow.step2'));
     await this.runValidation();
     
-    console.log('\n3️⃣ Analyzing translation completeness...');
+    console.log('\n' + uiI18n.t('operations.workflow.step3'));
     await this.runAnalysis();
     
-    console.log('\n4️⃣ Checking key usage...');
+    console.log('\n' + uiI18n.t('operations.workflow.step4'));
     await this.runUsageAnalysis();
     
-    console.log('\n🎉 Workflow completed with 100% coverage! Check the reports directory for detailed results.');
+    console.log('\n' + uiI18n.t('operations.workflow.completed'));
   }
 
   // Main execution
@@ -436,6 +475,12 @@ ${'='.repeat(60)}
             break;
           case 'complete':
             await this.runCompletion();
+            break;
+          case 'sizing':
+            await this.runSizingAnalysis({
+              threshold: args.sizingThreshold,
+              format: args.sizingFormat
+            });
             break;
           case 'status':
             await this.showStatus();
@@ -482,15 +527,21 @@ ${'='.repeat(60)}
               await this.runCompletion();
               break;
             case '6':
-              await this.runWorkflow();
+              await this.runSizingAnalysis();
               break;
             case '7':
-              await this.showStatus();
+              await this.runWorkflow();
               break;
             case '8':
-              await this.deleteReports();
+              await this.showStatus();
               break;
             case '9':
+              await this.deleteReports();
+              break;
+            case '10':
+              await uiI18n.selectLanguage();
+              break;
+            case '11':
               this.showHelp();
               break;
             case '0':
@@ -498,7 +549,7 @@ ${'='.repeat(60)}
               this.rl.close();
               return;
             default:
-              console.log('❌ Invalid choice. Please select 0-9.');
+              console.log('❌ Invalid choice. Please select 0-11.');
           }
           
           // Pause before showing menu again

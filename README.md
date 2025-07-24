@@ -1,6 +1,25 @@
-# 🌐 I18N Management System
+# 🌐 I18N Management Toolkit
 
-A comprehensive internationalization (i18n) management toolkit for JavaScript/TypeScript projects. This system helps you initialize, analyze, validate, and maintain translations across multiple languages with visual reports and automated workflows.
+[![GitHub Repository](https://img.shields.io/badge/GitHub-i18n--management--toolkit-blue?logo=github)](https://github.com/vladnoskv/i18n-management-toolkit.git)
+[![Node.js](https://img.shields.io/badge/Node.js-%3E%3D16.0.0-green?logo=node.js)](https://nodejs.org/)
+[![i18next](https://img.shields.io/badge/i18next-25.3.2-orange)](https://www.i18next.com/)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+A comprehensive internationalization (i18n) management toolkit for JavaScript/TypeScript projects. This custom helper plugin helps you manage the constant need to track translations effectively, especially in large and complex projects with multiple languages. It prevents i18n debug errors by ensuring translation keys exist, and when visible, clearly displays "NOT TRANSLATED" text to users, making missing translations immediately apparent.
+
+## 🌍 Multi-Language Support
+
+The toolkit itself supports multiple languages for its interactive interface and reports, allowing developers to work in their preferred language:
+
+- 🇺🇸 **English** (en) - Default
+- 🇩🇪 **German** (de) - Deutsch
+- 🇪🇸 **Spanish** (es) - Español
+- 🇫🇷 **French** (fr) - Français
+- 🇷🇺 **Russian** (ru) - Русский
+- 🇯🇵 **Japanese** (ja) - 日本語
+- 🇨🇳 **Chinese** (zh) - 中文
+
+**All interactive scripts, reports, and error messages are provided in the user's selected language for easier diagnosis and management.**
 
 ## 📋 Table of Contents
 
@@ -19,15 +38,43 @@ A comprehensive internationalization (i18n) management toolkit for JavaScript/Ty
 ## 🚀 Quick Start
 
 ```bash
-# Interactive mode - recommended for first-time users
+# Interactive mode with language selection - recommended for first-time users
 node scripts/i18n/package/00-manage-i18n.js
+
+# Interactive mode with specific UI language
+node scripts/i18n/package/00-manage-i18n.js --ui-language=de
+node scripts/i18n/package/00-manage-i18n.js --ui-language=es
+node scripts/i18n/package/00-manage-i18n.js --ui-language=fr
 
 # Direct command execution
 node scripts/i18n/package/00-manage-i18n.js --command=init
 node scripts/i18n/package/00-manage-i18n.js --command=analyze
 node scripts/i18n/package/00-manage-i18n.js --command=validate
 node scripts/i18n/package/00-manage-i18n.js --command=usage
+
+# Generate reports in specific language
+node scripts/i18n/package/02-analyze-translations.js --report-language=de
 ```
+
+### 🌍 Language Selection
+
+On first run, the toolkit will ask you to select your preferred language for the interface:
+
+```
+🌍 SELECT YOUR PREFERRED LANGUAGE / WÄHLEN SIE IHRE SPRACHE
+============================================================
+1. 🇺🇸 English
+2. 🇩🇪 Deutsch (German)
+3. 🇪🇸 Español (Spanish)
+4. 🇫🇷 Français (French)
+5. 🇷🇺 Русский (Russian)
+6. 🇯🇵 日本語 (Japanese)
+7. 🇨🇳 中文 (Chinese)
+
+Please select (1-7): 
+```
+
+Your language preference will be saved and used for all future interactions, reports, and error messages.
 
 ## 📦 Requirements
 
@@ -47,7 +94,23 @@ node scripts/i18n/package/00-manage-i18n.js --command=usage
 
 ## 🛠️ Installation
 
-### 1. Ensure i18next is installed
+### Option 1: Clone from GitHub Repository
+
+```bash
+# Clone the repository
+git clone https://github.com/vladnoskv/i18n-management-toolkit.git
+
+# Copy the scripts to your project
+cp -r i18n-management-toolkit/scripts/i18n/package/ your-project/scripts/i18n/
+
+# Or use the scripts directly from the cloned repository
+cd i18n-management-toolkit
+node scripts/i18n/package/00-manage-i18n.js
+```
+
+### Option 2: Manual Installation
+
+#### 1. Ensure i18next is installed
 
 ```bash
 # For React projects
@@ -60,7 +123,7 @@ npm install i18next@^25.3.2 vue-i18next
 npm install i18next@^25.3.2
 ```
 
-### 2. Copy the i18n management scripts
+#### 2. Copy the i18n management scripts
 
 Copy the entire `scripts/i18n/package/` directory to your project:
 
@@ -75,7 +138,8 @@ your-project/
 │           ├── 03-validate-translations.js
 │           ├── 04-check-usage.js
 │           ├── 05-complete-translations.js
-│           ├── 06-summary-report.js
+│           ├── 07-summary-report.js
+│           ├── locales/              # Multi-language UI support
 │           └── README.md
 ```
 
@@ -114,7 +178,8 @@ scripts/i18n/package/
 ├── 03-validate-translations.js # ✅ Validate translation files
 ├── 04-check-usage.js          # 🔍 Check translation key usage
 ├── 05-complete-translations.js # 🎯 Complete translations (100% coverage)
-├── 06-summary-report.js       # 📋 Generate summary reports
+├── 06-analyze-sizing.js       # 📏 Analyze translation sizing and layout impact
+├── 07-summary-report.js       # 📋 Generate summary reports
 ├── i18n-reports/              # 📈 Generated reports
 └── README.md                   # 📖 This documentation
 ```
@@ -123,27 +188,40 @@ scripts/i18n/package/
 
 ### 🎛️ 00-manage-i18n.js - Main Management Interface
 
-The central hub for all i18n operations with both interactive and command-line interfaces.
+The central hub for all i18n operations with both interactive and command-line interfaces. **Designed specifically for large and complex projects** where managing multiple languages becomes challenging.
 
 **Features:**
-- 🖥️ Interactive menu system
-- 📊 Project status overview
-- 🔄 Orchestrates all other scripts
-- 🚀 Comprehensive workflow execution
-- 🗑️ Report management
+- 🌍 **Multi-language UI support** - Interface in your preferred language
+- 🖥️ Interactive menu system with language-specific prompts
+- 📊 Project status overview with visual indicators
+- 🔄 Orchestrates all other scripts seamlessly
+- 🚀 Comprehensive workflow execution for large projects
+- 🗑️ Advanced report management and cleanup
+- 🛡️ **Prevents i18n debug errors** by ensuring translation keys exist
+- 🎯 **Clear "NOT TRANSLATED" markers** for immediate visibility
+- 📈 **Scalable for enterprise-level projects** with hundreds of translation keys
 
 **Usage:**
 ```bash
-# Interactive mode
+# Interactive mode with language selection
 node scripts/i18n/package/00-manage-i18n.js
+
+# Interactive mode with specific UI language
+node scripts/i18n/package/00-manage-i18n.js --ui-language=de
+node scripts/i18n/package/00-manage-i18n.js --ui-language=es
 
 # Direct commands
 node scripts/i18n/package/00-manage-i18n.js --command=status
 node scripts/i18n/package/00-manage-i18n.js --command=workflow
+node scripts/i18n/package/00-manage-i18n.js --command=sizing
 node scripts/i18n/package/00-manage-i18n.js --help
+
+# Sizing analysis with options
+node scripts/i18n/package/00-manage-i18n.js --command=sizing --sizing-threshold=30
+node scripts/i18n/package/00-manage-i18n.js --command=sizing --sizing-format=json
 ```
 
-**Interactive Menu:**
+**Interactive Menu (Example in English):**
 ```
 🌐 I18N MANAGEMENT MENU
 ============================================================
@@ -152,11 +230,31 @@ node scripts/i18n/package/00-manage-i18n.js --help
 3. ✅ Validate translations
 4. 📊 Check key usage
 5. 🎯 Complete translations (100% coverage)
-6. 🔄 Run full workflow
-7. 📋 Show project status
-8. 🗑️  Delete all reports
-9. ❓ Help
+6. 📏 Analyze sizing
+7. 🔄 Run full workflow
+8. 📋 Show project status
+9. 🗑️  Delete all reports
+10. 🌍 Change interface language
+11. ❓ Help
 0. 🚪 Exit
+```
+
+**Interactive Menu (Example in German):**
+```
+🌐 I18N VERWALTUNGSMENÜ
+============================================================
+1. 🚀 Neue Sprachen initialisieren
+2. 🔍 Übersetzungen analysieren
+3. ✅ Übersetzungen validieren
+4. 📊 Schlüsselverwendung prüfen
+5. 🎯 Übersetzungen vervollständigen (100% Abdeckung)
+6. 📏 Größenanalyse
+7. 🔄 Vollständigen Workflow ausführen
+8. 📋 Projektstatus anzeigen
+9. 🗑️  Alle Berichte löschen
+10. 🌍 Sprache der Benutzeroberfläche ändern
+11. ❓ Hilfe
+0. 🚪 Beenden
 ```
 
 ### 🚀 01-init-i18n.js - Language Initialization
@@ -283,7 +381,63 @@ Helps achieve 100% translation coverage with guided completion.
 - ✅ Validation during completion
 - 📊 Progress tracking
 
-### 📋 06-summary-report.js - Summary Reports
+### 📏 06-analyze-sizing.js - Translation Sizing Analysis
+
+Analyzes translation file sizes and their impact on UI layouts and performance.
+
+**Features:**
+- 📊 File size analysis and comparison
+- 📏 Character count statistics per language
+- 🎯 Key-level size variation detection
+- 🖥️ UI layout impact assessment
+- 📈 Size optimization recommendations
+- 📄 Detailed sizing reports with visual indicators
+- ⚡ Performance impact analysis
+
+**Usage:**
+```bash
+# Basic sizing analysis
+node scripts/i18n/package/06-analyze-sizing.js
+
+# With custom threshold for size variations
+node scripts/i18n/package/06-analyze-sizing.js --threshold=50
+
+# Generate detailed JSON report
+node scripts/i18n/package/06-analyze-sizing.js --format=json
+
+# Analyze specific languages
+node scripts/i18n/package/06-analyze-sizing.js --languages=de,fr,es
+```
+
+**Sample Output:**
+```
+📏 TRANSLATION SIZING ANALYSIS
+============================================================
+📁 Source directory: ./locales
+🔤 Source language: en
+📊 Languages analyzed: 4
+
+📊 FILE SIZE SUMMARY:
+============================================================
+📄 common.json:
+   🇺🇸 en: 1.2 KB (baseline)
+   🇩🇪 de: 1.4 KB (+16.7%)
+   🇪🇸 es: 1.3 KB (+8.3%)
+   🇫🇷 fr: 1.5 KB (+25.0%)
+
+⚠️  SIZE VARIATIONS DETECTED:
+============================================================
+🔤 Key 'navigation.contact':
+   🇫🇷 fr: 'Contactez-nous' (+100% vs 'Contact')
+   
+🎯 RECOMMENDATIONS:
+============================================================
+• 3 keys have significant size variations (>50%)
+• Consider shorter alternatives for French translations
+• Review UI layout for keys with large variations
+```
+
+### 📋 07-summary-report.js - Summary Reports
 
 Generates comprehensive project-wide translation summaries.
 
@@ -298,7 +452,7 @@ Generates comprehensive project-wide translation summaries.
 
 ### Default Configuration
 
-All scripts use consistent default configuration:
+All scripts use consistent default configuration optimized for large-scale projects:
 
 ```javascript
 const DEFAULT_CONFIG = {
@@ -308,7 +462,28 @@ const DEFAULT_CONFIG = {
   defaultLanguages: ['de', 'es', 'fr', 'ru'], // Default target languages
   outputDir: './i18n-reports',               // Reports output directory
   excludeFiles: ['.DS_Store', 'Thumbs.db'],  // Files to ignore
-  strictMode: false                          // Strict validation mode
+  strictMode: false,                         // Strict validation mode
+  
+  // Multi-language UI support
+  uiLanguage: 'auto',                        // UI language (auto-detect or specific)
+  supportedUILanguages: ['en', 'de', 'es', 'fr', 'ru', 'ja', 'zh'],
+  reportLanguage: 'auto',                    // Report generation language
+  
+  // Sizing analysis configuration
+  sizingThreshold: 50,                       // Threshold for size variation warnings (%)
+  sizingFormat: 'table',                     // Output format: 'table' or 'json'
+  enableSizingReports: true,                 // Generate detailed sizing reports
+  
+  // Large project optimizations
+  batchSize: 100,                            // Keys processed per batch
+  enableProgressBars: true,                  // Visual progress indicators
+  enableColorOutput: true,                   // Colored console output
+  maxConcurrentFiles: 10,                    // Concurrent file processing
+  
+  // Enterprise features
+  enableAuditLog: false,                     // Track all changes
+  backupBeforeChanges: true,                 // Create backups
+  validateOnSave: true                       // Auto-validate after changes
 };
 ```
 
@@ -316,25 +491,86 @@ const DEFAULT_CONFIG = {
 
 #### 1. Command Line Arguments
 ```bash
+# Basic configuration
 node scripts/i18n/package/00-manage-i18n.js --source-dir=./locales --source-language=en
+
+# Multi-language UI
+node scripts/i18n/package/00-manage-i18n.js --ui-language=de --report-language=de
+
+# Sizing analysis options
+node scripts/i18n/package/00-manage-i18n.js --command=sizing --sizing-threshold=50 --sizing-format=json
+
+# Large project optimizations
+node scripts/i18n/package/00-manage-i18n.js --batch-size=200 --max-concurrent=20
+
+# Enterprise features
+node scripts/i18n/package/00-manage-i18n.js --enable-audit-log --backup-before-changes
 ```
 
 #### 2. Environment Variables
 ```bash
+# Basic settings
 export I18N_SOURCE_DIR=./locales
 export I18N_SOURCE_LANGUAGE=en
-export I18N_DEFAULT_LANGUAGES=de,es,fr,ru
+export I18N_DEFAULT_LANGUAGES=de,es,fr,ru,ja,zh
+
+# UI language settings
+export I18N_UI_LANGUAGE=de
+export I18N_REPORT_LANGUAGE=de
+
+# Performance settings
+export I18N_BATCH_SIZE=200
+export I18N_MAX_CONCURRENT_FILES=20
+
+# Enterprise settings
+export I18N_ENABLE_AUDIT_LOG=true
+export I18N_BACKUP_BEFORE_CHANGES=true
 ```
 
-#### 3. Configuration File (Optional)
+#### 3. Configuration File (Recommended for Large Projects)
 Create `i18n.config.js` in your project root:
 ```javascript
 module.exports = {
+  // Basic configuration
   sourceDir: './locales',
   sourceLanguage: 'en',
-  defaultLanguages: ['de', 'es', 'fr', 'ru', 'ja', 'zh'],
+  defaultLanguages: ['de', 'es', 'fr', 'ru', 'ja', 'zh', 'pt', 'it'],
   outputDir: './reports/i18n',
-  strictMode: true
+  strictMode: true,
+  
+  // Multi-language UI
+  uiLanguage: 'de',              // German interface
+  reportLanguage: 'de',          // German reports
+  
+  // Large project optimizations
+  batchSize: 200,                // Process 200 keys at once
+  maxConcurrentFiles: 20,        // Process 20 files simultaneously
+  enableProgressBars: true,      // Show progress for long operations
+  enableColorOutput: true,       // Colored console output
+  
+  // Enterprise features
+  enableAuditLog: true,          // Track all translation changes
+  backupBeforeChanges: true,     // Create backups before modifications
+  validateOnSave: true,          // Auto-validate after changes
+  
+  // Custom patterns for large codebases
+  translationPatterns: [
+    /t\(['"](.*?)['"]\)/g,       // Standard i18next
+    /\$t\(['"](.*?)['"]\)/g,     // Vue i18n
+    /i18n\.t\(['"](.*?)['"]\)/g, // Direct i18next
+    /translate\(['"](.*?)['"]\)/g, // Custom function
+    /formatMessage\(\{\s*id:\s*['"](.*?)['"]\s*\}\)/g // React Intl
+  ],
+  
+  // Exclude patterns for large projects
+  excludePatterns: [
+    '**/node_modules/**',
+    '**/dist/**',
+    '**/build/**',
+    '**/*.test.js',
+    '**/*.spec.js',
+    '**/coverage/**'
+  ]
 };
 ```
 
@@ -369,7 +605,12 @@ module.exports = {
    node scripts/i18n/package/00-manage-i18n.js --command=analyze
    ```
 
-3. **Run full workflow:**
+3. **Analyze sizing impact:**
+   ```bash
+   node scripts/i18n/package/00-manage-i18n.js --command=sizing
+   ```
+
+4. **Run full workflow:**
    ```bash
    node scripts/i18n/package/00-manage-i18n.js --command=workflow
    ```
@@ -379,15 +620,29 @@ module.exports = {
 1. **Add new translation keys** to your source language files
 2. **Run analysis** to identify missing translations
 3. **Complete translations** for target languages
-4. **Validate** all translation files
-5. **Check usage** to find unused keys
-6. **Generate reports** for team review
+4. **Analyze sizing impact** to ensure UI compatibility
+5. **Validate** all translation files
+6. **Check usage** to find unused keys
+7. **Generate reports** for team review
 
 ## 📈 Visual Reports
 
-The system generates comprehensive, easy-to-read reports:
+The system generates comprehensive, easy-to-read reports **in your preferred language** for better understanding and team collaboration:
 
-### 📊 Analysis Report Example
+### 🌍 Multi-Language Report Generation
+
+Reports are automatically generated in the user's selected language, making it easier for international teams to understand translation status and issues.
+
+**Supported Report Languages:**
+- 🇺🇸 English (en)
+- 🇩🇪 German (de) 
+- 🇪🇸 Spanish (es)
+- 🇫🇷 French (fr)
+- 🇷🇺 Russian (ru)
+- 🇯🇵 Japanese (ja)
+- 🇨🇳 Chinese (zh)
+
+### 📊 Analysis Report Example (English)
 
 ```
 TRANSLATION ANALYSIS REPORT FOR DE
@@ -397,6 +652,32 @@ Files analyzed: 1/1
 Keys needing translation: 14
 
 FILE BREAKDOWN:
+==================================================
+```
+
+### 📊 Analysis Report Example (German)
+
+```
+ÜBERSETZUNGSANALYSE-BERICHT FÜR DE
+Erstellt: 2025-07-24T02:39:44.763Z
+Status: 0/14 übersetzt (0%)
+Analysierte Dateien: 1/1
+Schlüssel, die Übersetzung benötigen: 14
+
+DATEI-AUFSCHLÜSSELUNG:
+==================================================
+```
+
+### 📊 Analysis Report Example (Spanish)
+
+```
+INFORME DE ANÁLISIS DE TRADUCCIÓN PARA DE
+Generado: 2025-07-24T02:39:44.763Z
+Estado: 0/14 traducido (0%)
+Archivos analizados: 1/1
+Claves que necesitan traducción: 14
+
+DESGLOSE DE ARCHIVOS:
 ==================================================
 
 📄 common.json
@@ -449,42 +730,89 @@ de: [NEEDS TRANSLATION]
 
 ## 🎯 Best Practices
 
-### 📁 File Organization
+### 📁 File Organization for Large Projects
 
 ```
 locales/
 ├── en/                    # Source language
-│   ├── common.json        # Common UI elements
-│   ├── navigation.json    # Navigation items
-│   ├── forms.json         # Form labels and validation
-│   └── errors.json        # Error messages
-├── de/                    # Target languages
+│   ├── common.json        # Common UI elements (buttons, labels)
+│   ├── navigation.json    # Navigation items and menus
+│   ├── forms.json         # Form labels and validation messages
+│   ├── errors.json        # Error messages and alerts
+│   ├── dashboard.json     # Dashboard-specific content
+│   ├── auth.json          # Authentication flows
+│   ├── admin.json         # Admin panel content
+│   └── modules/           # Feature-specific translations
+│       ├── crm.json       # CRM module
+│       ├── reports.json   # Reports module
+│       └── settings.json  # Settings module
+├── de/                    # Target languages (same structure)
 │   ├── common.json
 │   ├── navigation.json
 │   ├── forms.json
-│   └── errors.json
+│   ├── errors.json
+│   ├── dashboard.json
+│   ├── auth.json
+│   ├── admin.json
+│   └── modules/
+│       ├── crm.json
+│       ├── reports.json
+│       └── settings.json
 └── ...
 ```
 
-### 🔑 Key Naming Conventions
+### 🔑 Key Naming Conventions for Scale
 
 ```json
 {
   "common.welcome": "Welcome",
-  "navigation.home": "Home",
+  "common.buttons.save": "Save",
+  "common.buttons.cancel": "Cancel",
+  "navigation.main.home": "Home",
+  "navigation.main.dashboard": "Dashboard",
   "forms.validation.required": "This field is required",
-  "errors.network.timeout": "Network timeout occurred"
+  "forms.validation.email.invalid": "Please enter a valid email",
+  "errors.network.timeout": "Network timeout occurred",
+  "errors.auth.unauthorized": "You are not authorized",
+  "modules.crm.contacts.title": "Contact Management",
+  "modules.reports.analytics.title": "Analytics Dashboard"
 }
 ```
 
-### 🛡️ Translation Safety
+### 🛡️ Translation Safety for Large Teams
 
-- ✅ Always use the `__NOT_TRANSLATED__` marker
-- ✅ Run validation before deployment
-- ✅ Keep translation keys descriptive
-- ✅ Use namespacing for organization
-- ❌ Don't delete keys without checking usage
-- ❌ Don't modify key names without updating code
+- ✅ **Always use the `__NOT_TRANSLATED__` marker** - prevents runtime errors
+- ✅ **Run validation before deployment** - catches issues early
+- ✅ **Keep translation keys descriptive** - helps team understanding
+- ✅ **Use consistent namespacing** - organizes large key sets
+- ✅ **Set up UI language preferences** - improves team productivity
+- ✅ **Generate reports in team's language** - better communication
+- ✅ **Use audit logs for large teams** - track who changed what
+- ✅ **Create backups before bulk changes** - safety net for large updates
+- ❌ **Don't delete keys without checking usage** - breaks functionality
+- ❌ **Don't modify key names without updating code** - causes missing translations
+- ❌ **Don't skip validation in CI/CD** - prevents broken deployments
+
+### 🌍 Multi-Language Team Collaboration
+
+#### For International Teams:
+```bash
+# German team members
+node scripts/i18n/package/00-manage-i18n.js --ui-language=de
+
+# Spanish team members  
+node scripts/i18n/package/00-manage-i18n.js --ui-language=es
+
+# Generate reports in team's language
+node scripts/i18n/package/02-analyze-translations.js --report-language=de
+```
+
+#### Team Workflow:
+1. **Set team language preferences** in `i18n.config.js`
+2. **Use consistent UI language** across team members
+3. **Generate reports in native language** for better understanding
+4. **Enable audit logging** to track changes by team members
+5. **Set up automated validation** in your CI/CD pipeline
 
 ### 🔄 Automation Integration
 
@@ -507,7 +835,7 @@ jobs:
       - run: node scripts/i18n/package/04-check-usage.js
 ```
 
-## 🔍 Troubleshooting
+## 🔧 Troubleshooting
 
 ### Common Issues
 
@@ -536,6 +864,66 @@ node scripts/i18n/package/02-analyze-translations.js --language=en
 
 # Verify file structure
 find locales/ -name "*.json" -exec echo "=== {} ===" \; -exec cat {} \;
+```
+
+#### ❌ "Module not found" errors
+```bash
+# Install missing dependencies
+npm install i18next@25.3.2 react-i18next
+```
+
+#### ❌ Translation keys not found
+```bash
+# Run usage analysis
+node scripts/i18n/package/04-check-usage.js
+
+# Check for missing keys
+node scripts/i18n/package/02-analyze-translations.js
+```
+
+#### ❌ Performance issues with large projects (1000+ keys)
+```bash
+# Use batch processing for better performance
+node scripts/i18n/package/00-manage-i18n.js --batch-size=100
+
+# Enable progress indicators
+node scripts/i18n/package/00-manage-i18n.js --show-progress
+
+# Limit concurrent file processing
+node scripts/i18n/package/00-manage-i18n.js --max-concurrent=5
+```
+
+#### ❌ Multi-language UI issues
+```bash
+# Reset UI language preference
+node scripts/i18n/package/00-manage-i18n.js --reset-ui-language
+
+# Check available UI languages
+node scripts/i18n/package/00-manage-i18n.js --list-ui-languages
+
+# Force specific UI language
+node scripts/i18n/package/00-manage-i18n.js --ui-language=en --force
+```
+
+#### ❌ Report generation in wrong language
+```bash
+# Set default report language
+node scripts/i18n/package/02-analyze-translations.js --report-language=de --set-default
+
+# Generate report in specific language
+node scripts/i18n/package/02-analyze-translations.js --report-language=es
+```
+
+#### ❌ Large team collaboration issues
+```bash
+# Enable audit logging
+node scripts/i18n/package/00-manage-i18n.js --enable-audit-log
+
+# Check who made recent changes
+node scripts/i18n/package/00-manage-i18n.js --show-audit-log
+
+# Restore from backup
+node scripts/i18n/package/00-manage-i18n.js --restore-backup=2025-01-15
 ```
 
 ### Debug Mode
@@ -585,17 +973,65 @@ We welcome feature requests! Please open an issue with:
 
 ---
 
+## 🌐 GitHub Repository
+
+**Repository:** [https://github.com/vladnoskv/i18n-management-toolkit](https://github.com/vladnoskv/i18n-management-toolkit)
+
+### Quick Clone & Setup
+```bash
+# Clone the repository
+git clone https://github.com/vladnoskv/i18n-management-toolkit.git
+
+# Navigate to your project
+cd your-project
+
+# Copy the toolkit
+cp -r ../i18n-management-toolkit/scripts/i18n .
+
+# Install dependencies
+npm install i18next@25.3.2 react-i18next
+
+# Start using the toolkit
+node scripts/i18n/package/00-manage-i18n.js
+```
+
+### Contributing to the Repository
+1. **Fork** the repository on GitHub
+2. **Clone** your fork locally
+3. **Create** a feature branch
+4. **Test** your changes with multiple project types
+5. **Submit** a pull request with detailed description
+
+### Issues & Feature Requests
+- **Bug Reports:** [GitHub Issues](https://github.com/vladnoskv/i18n-management-toolkit/issues)
+- **Feature Requests:** [GitHub Discussions](https://github.com/vladnoskv/i18n-management-toolkit/discussions)
+- **Documentation:** [GitHub Wiki](https://github.com/vladnoskv/i18n-management-toolkit/wiki)
+
+---
+
 ## 📄 License
 
 MIT License - feel free to use in your projects!
 
 ## 🙏 Acknowledgments
 
-- Built for i18next ^25.3.2 compatibility
-- Supports modern JavaScript/TypeScript projects
-- Designed for developer productivity
-- Community-driven improvements
+- **Custom Helper Plugin** designed for large, complex multi-language projects
+- **Prevents i18n debug errors** by providing `__NOT_TRANSLATED__` markers
+- **Built for i18next ^25.3.2 compatibility** with modern React applications
+- **Multi-language UI support** for international development teams
+- **Enterprise-ready features** including audit logs, backups, and batch processing
+- **Visual reports in native languages** for better team collaboration
+- **Community-driven improvements** and open-source contributions
+- **Designed for developer productivity** and translation management efficiency
+
+### Special Thanks
+- **i18next team** for the excellent internationalization framework
+- **React i18next team** for seamless React integration
+- **Open source community** for feedback and contributions
+- **International development teams** who inspired multi-language UI features
 
 ---
 
 **Happy translating! 🌍✨**
+
+*Transform your translation workflow with this powerful, multi-language toolkit designed for modern development teams.*

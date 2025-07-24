@@ -1,0 +1,147 @@
+{
+  "menu": {
+    "title": "🌐 I18N管理メニュー",
+    "separator": "============================================================",
+    "options": {
+      "init": "🚀 新しい言語を初期化",
+      "analyze": "🔍 翻訳を分析",
+      "validate": "✅ 翻訳を検証",
+      "usage": "📊 キー使用状況をチェック",
+      "complete": "🎯 翻訳を完了（100%カバレッジ）",
+      "workflow": "🔄 完全なワークフローを実行",
+      "status": "📋 プロジェクトステータスを表示",
+      "delete": "🗑️  すべてのレポートを削除",
+      "language": "🌍 UIの言語を変更",
+      "help": "❓ ヘルプ",
+      "exit": "🚪 終了"
+    },
+    "prompt": "オプションを選択してください（0-10）: ",
+    "invalidChoice": "❌ 無効な選択です。0-10を選択してください。",
+    "continuePrompt": "続行するにはEnterキーを押してください...",
+    "goodbye": "👋 さようなら！"
+  },
+  "status": {
+    "title": "📊 I18Nプロジェクトステータス",
+    "sourceDir": "📁 ソースディレクトリ",
+    "sourceLanguage": "🔤 ソース言語",
+    "i18nSetup": "🌐 i18n設定",
+    "availableLanguages": "🗂️  利用可能な言語",
+    "translationFiles": "📄 翻訳ファイル",
+    "totalKeys": "🔤 翻訳キーの総数",
+    "yes": "✅ はい",
+    "no": "❌ いいえ",
+    "suggestions": {
+      "analysis": "💡 翻訳の完全性をチェックするために分析を実行できます",
+      "init": "💡 プロジェクトでi18nを設定するために初期化を実行してください"
+    }
+  },
+  "operations": {
+    "init": {
+      "title": "🚀 I18N初期化",
+      "separator": "============================================================"
+    },
+    "analyze": {
+      "title": "🔍 翻訳分析",
+      "separator": "============================================================"
+    },
+    "validate": {
+      "title": "✅ 翻訳検証",
+      "separator": "============================================================"
+    },
+    "usage": {
+      "title": "📊 キー使用状況分析",
+      "separator": "============================================================"
+    },
+    "complete": {
+      "title": "🎯 翻訳完了",
+      "separator": "============================================================"
+    },
+    "workflow": {
+      "title": "🔄 完全なI18Nワークフローの実行",
+      "separator": "============================================================",
+      "steps": {
+        "completing": "1️⃣ 100%カバレッジのための翻訳完了中...",
+        "validating": "2️⃣ 翻訳検証中...",
+        "analyzing": "3️⃣ 翻訳完全性分析中...",
+        "usage": "4️⃣ キー使用状況チェック中...",
+        "completed": "🎉 ワークフローが100%カバレッジで完了しました！詳細な結果についてはレポートディレクトリをチェックしてください。"
+      },
+      "notSetup": "❌ i18nが設定されていません。まず初期化を実行してください。"
+    },
+    "delete": {
+      "title": "🗑️  すべてのレポートを削除",
+      "separator": "============================================================",
+      "looking": "🔍 レポートを検索中",
+      "noDirectory": "📁 レポートディレクトリが存在しません。作成中...",
+      "directoryCreated": "✅ レポートディレクトリが作成されました。",
+      "noFiles": "📄 削除するレポートファイルが見つかりません。",
+      "found": "📄 {count}個のレポートファイルが見つかりました：",
+      "confirmPrompt": "⚠️  すべてのレポートを削除してもよろしいですか？（y/N）: ",
+      "deleted": "✅ 削除されました: {file}",
+      "failed": "❌ {file}の削除に失敗しました: {error}",
+      "success": "🎉 {count}個のレポートファイルが正常に削除されました。",
+      "cancelled": "❌ 操作がキャンセルされました。",
+      "errorReading": "❌ レポートディレクトリの読み取りエラー：",
+      "errorCreating": "❌ レポートディレクトリの作成エラー："
+    }
+  },
+  "help": {
+    "title": "🌐 I18N管理ツール",
+    "separator": "============================================================",
+    "description": "このツールはプロジェクトの国際化（i18n）管理を支援します。",
+    "commands": "コマンド：",
+    "commandList": {
+      "init": "新しい言語のi18nを初期化",
+      "analyze": "翻訳の完全性を分析",
+      "validate": "翻訳ファイルを検証",
+      "usage": "翻訳キーの使用状況をチェック",
+      "complete": "100%カバレッジのために翻訳を完了",
+      "status": "全体的なi18nステータスを表示",
+      "workflow": "完了を含む完全なワークフローを実行",
+      "delete": "すべてのレポートファイルを削除",
+      "help": "このヘルプメッセージを表示"
+    },
+    "options": "オプション：",
+    "optionList": {
+      "command": "--command=<cmd>        特定のコマンドを直接実行",
+      "sourceDir": "--source-dir=<path>    i18nソースディレクトリを設定",
+      "languages": "--languages=<list>     カンマ区切りの言語リスト",
+      "interactive": "--interactive=false    インタラクティブモードを無効化",
+      "uiLanguage": "--ui-language=<lang>   UI言語を設定（en, de, es, fr, ru, ja, zh）",
+      "reportLanguage": "--report-language=<lang> レポート言語を設定"
+    },
+    "examples": "例：",
+    "exampleList": [
+      "node scripts/i18n/00-manage-i18n.js",
+      "node scripts/i18n/00-manage-i18n.js --command=init",
+      "node scripts/i18n/00-manage-i18n.js --command=validate --languages=de,fr",
+      "node scripts/i18n/00-manage-i18n.js --source-dir=./locales",
+      "node scripts/i18n/00-manage-i18n.js --ui-language=de",
+      "node scripts/i18n/00-manage-i18n.js --report-language=es"
+    ]
+  },
+  "errors": {
+    "unknown": "❌ エラー：",
+    "unknownCommand": "❌ 不明なコマンド：",
+    "errorRunning": "❌ 完了実行エラー："
+  },
+  "language": {
+    "title": "🌍 UIの言語を変更",
+    "separator": "============================================================",
+    "current": "現在のUI言語: {language}",
+    "available": "利用可能な言語：",
+    "prompt": "言語を選択してください（1-7）またはキャンセルするには0: ",
+    "invalid": "❌ 無効な選択です。1-7または0を選択してください。",
+    "cancelled": "❌ 言語変更がキャンセルされました。",
+    "changed": "✅ UI言語が{language}に変更されました。変更を確認するにはツールを再起動してください。",
+    "languages": {
+      "en": "英語（English）",
+      "de": "ドイツ語（Deutsch）",
+      "es": "スペイン語（Español）",
+      "fr": "フランス語（Français）",
+      "ru": "ロシア語（Русский）",
+      "ja": "日本語",
+      "zh": "中国語（中文）"
+    }
+  }
+}
